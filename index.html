@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Info Gempa</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f5f5f5;
+  }
+
+  h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 10px;
+  }
+
+  h6 {
+    text-align: center;
+    color: #666;
+    margin-bottom: 20px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  th, td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+  }
+
+  th {
+    background-color: #f2f2f2;
+    color: #333;
+  }
+</style>
+</head>
+<body>
+
+<h2>Info Gempa</h2>
+<center><h6>Project By IkhsanDev</h6></center>
+<table id="infogempa-table">
+  <thead>
+    <tr>
+      <th>Info</th>
+      <th>Data</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+<center><h6>API BY : 
+<a href="https://data.bmkg.go.id/DataMKG/TEWS/autogempa.json">API BMKG</a>
+</h6></center>
+<script>
+  // Fungsi untuk melakukan fetch API
+  function fetchData() {
+    const bmkg_endpoint = "https://data.bmkg.go.id/DataMKG/TEWS/autogempa.json";
+    fetch(bmkg_endpoint)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        const infogempaTable = document.getElementById('infogempa-table');
+        const { Infogempa } = data;
+        const { gempa } = Infogempa;
+
+        // Mengisi tabel dengan data Infogempa
+        const tbody = infogempaTable.querySelector('tbody');
+        tbody.innerHTML = `
+          <tr>
+            <td>Waktu</td>
+            <td>${gempa.Jam}</td>
+          </tr>
+          <tr>
+            <td>Tanggal</td>
+            <td>${gempa.Tanggal}
+          </tr>
+          <tr>
+            <td>Magnitudo</td>
+            <td>${gempa.Magnitude}</td>
+          </tr>
+          <tr>
+            <td>Kedalaman</td>
+            <td>${gempa.Kedalaman}</td>
+          </tr>
+          <tr>
+            <td>Wilayah</td>
+            <td>${gempa.Wilayah}</td>
+          </tr>
+          <tr>
+            <td>Lintang</td>
+            <td>${gempa.Lintang}</td>
+          </tr>
+          <tr>
+            <td>Bujur</td>
+            <td>${gempa.Bujur}</td>
+          </tr>
+          <tr>
+            <td>Dirasakan</td>
+            <td>${gempa.Dirasakan}</td>
+          </tr>
+        `;
+      })
+      .catch(error => {
+        console.error('There has been a problem with your fetch operation:', error);
+      });
+  }
+
+  // Memanggil fungsi fetchData saat halaman dimuat
+  document.addEventListener('DOMContentLoaded', () => {
+    fetchData();
+  });
+</script>
+
+</body>
+</html>
